@@ -4,7 +4,7 @@
 --  For more options, you can see `:help option-list`
 
 -- Make line numbers default
--- vim.o.number = true
+vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 vim.o.relativenumber = true
@@ -70,3 +70,8 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+vim.opt.expandtab = false -- use tabs, not spaces
+vim.opt.tabstop = 4 -- a tab looks like 4 spaces
+vim.opt.shiftwidth = 4 -- >> and << move by 4 columns
+vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces

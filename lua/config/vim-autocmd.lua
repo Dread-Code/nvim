@@ -119,3 +119,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
+
+-- Helper to automatically detect it when you open a buffer
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'python',
+  callback = function()
+    local venv_path = vim.fn.trim(vim.fn.system 'poetry env info -p')
+    if vim.fn.isdirectory(venv_path) == 1 then
+      vim.env.VIRTUAL_ENV = venv_path
+      vim.env.PATH = venv_path .. '/bin:' .. vim.env.PATH
+    end
+  end,
+})

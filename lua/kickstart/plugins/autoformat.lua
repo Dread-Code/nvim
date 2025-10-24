@@ -31,6 +31,7 @@ return { -- Autoformat
     formatters_by_ft = {
       lua = { 'stylua' },
       python = { 'black' },
+      go = { 'gopls' },
       -- You can use 'stop_after_first' to run the first available formatter from the list
       javascript = { 'prettier', stop_after_first = true },
       typescript = { 'prettier' },

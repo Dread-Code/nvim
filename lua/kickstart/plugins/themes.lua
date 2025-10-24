@@ -16,7 +16,7 @@ return {
     end,
   },
   {
-    'binhtran432k/dracula.nvim',
+    'Mofiqul/dracula.nvim',
     lazy = false,
     priority = 1000,
     opts = {},

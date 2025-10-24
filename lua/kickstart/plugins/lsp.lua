@@ -113,6 +113,10 @@ return {
       pyright = {},
       vtsls = {},
       tailwindcss = {},
+      gopls = {
+        gofumpt = true, -- enables stricter formatting (optional)
+        staticcheck = true,
+      },
     }
 
     -- Ensure the servers and tools above are installed
