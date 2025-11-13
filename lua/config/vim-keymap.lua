@@ -31,22 +31,20 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
-
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move windown keeping the middle' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move windown keeping the middle' })
+vim.keymap.set('n', 'n', 'nzz', { desc = 'Move windown keeping the middle' })
+vim.keymap.set('n', 'N', 'Nzzv', { desc = 'Move windown keeping the middle' })
 -- Move current or selected line up/down
-vim.keymap.set('n', '<M-S-j>', ':m .+1<CR>==', { desc = 'Move line down' })
-vim.keymap.set('n', '<M-S-k>', ':m .-2<CR>==', { desc = 'Move line up' })
-vim.keymap.set('i', '<M-S-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down' })
-vim.keymap.set('i', '<M-S-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up' })
-vim.keymap.set('v', '<M-S-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
-vim.keymap.set('v', '<M-S-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
+-- vim.keymap.set('n', '<M-S-j>', ':m .+1<CR>==', { desc = 'Move line down' })
+-- vim.keymap.set('n', '<M-S-k>', ':m .-2<CR>==', { desc = 'Move line up' })
+-- vim.keymap.set('i', '<M-S-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down' })
+-- vim.keymap.set('i', '<M-S-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up' })
+-- vim.keymap.set('v', '<M-S-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+-- vim.keymap.set('v', '<M-S-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 
 -- Cursor movement in insert mode with Alt + h/j/k/l
-vim.keymap.set('i', '<M-h>', '<Left>', { noremap = true, silent = true, desc = 'Move cursor left' })
-vim.keymap.set('i', '<M-l>', '<Right>', { noremap = true, silent = true, desc = 'Move cursor right' })
-vim.keymap.set('i', '<M-j>', '<Down>', { noremap = true, silent = true, desc = 'Move cursor down' })
-vim.keymap.set('i', '<M-k>', '<Up>', { noremap = true, silent = true, desc = 'Move cursor up' })
+-- vim.keymap.set('i', '<M-h>', '<Left>', { noremap = true, silent = true, desc = 'Move cursor left' })
+-- vim.keymap.set('i', '<M-l>', '<Right>', { noremap = true, silent = true, desc = 'Move cursor right' })
+-- vim.keymap.set('i', '<M-j>', '<Down>', { noremap = true, silent = true, desc = 'Move cursor down' })
+-- vim.keymap.set('i', '<M-k>', '<Up>', { noremap = true, silent = true, desc = 'Move cursor up' })
