@@ -120,12 +120,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Helper to automatically detect it when you open a buffer
+-- Helper to automatically detect Python virtual environment (UV or Poetry)
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'python',
   callback = function()
-    local venv_path = vim.fn.trim(vim.fn.system 'poetry env info -p')
-    if vim.fn.isdirectory(venv_path) == 1 then
+    local util = require 'lspconfig.util'
+    local root = util.root_pattern('uv.lock', 'poetry.lock', 'pyproject.toml', '.git')(vim.fn.expand '%:p')
+    local venv_path = nil
+    
+    if root then
+      -- Check for UV project (uv.lock)
+      if vim.fn.filereadable(root .. '/uv.lock') == 1 then
+        local uv_venv = root .. '/.venv'
+        if vim.fn.isdirectory(uv_venv) == 1 then
+          venv_path = uv_venv
+        end
+      end
+      
+      -- Check for Poetry project (poetry.lock)
+      if not venv_path and vim.fn.filereadable(root .. '/poetry.lock') == 1 then
+        local poetry_venv = vim.fn.trim(vim.fn.system 'poetry env info -p')
+        if vim.fn.isdirectory(poetry_venv) == 1 then
+          venv_path = poetry_venv
+        end
+      end
+    end
+    
+    -- Set virtual environment if found
+    if venv_path then
       vim.env.VIRTUAL_ENV = venv_path
       vim.env.PATH = venv_path .. '/bin:' .. vim.env.PATH
     end

@@ -110,7 +110,37 @@ return {
           },
         },
       },
-      pyright = {},
+      pyrefly = {
+        on_new_config = function(new_config, new_root_dir)
+          -- Auto-detect Poetry vs UV projects
+          if new_root_dir then
+            -- Check for UV project (uv.lock)
+            if vim.fn.filereadable(new_root_dir .. '/uv.lock') == 1 then
+              local uv_venv_pyrefly = new_root_dir .. '/.venv/bin/pyrefly'
+              if vim.fn.executable(uv_venv_pyrefly) == 1 then
+                new_config.cmd = { uv_venv_pyrefly, 'lsp' }
+                return
+              end
+            end
+            
+            -- Check for Poetry project (poetry.lock)
+            if vim.fn.filereadable(new_root_dir .. '/poetry.lock') == 1 then
+              new_config.cmd = { 'poetry', 'run', 'pyrefly', 'lsp' }
+              return
+            end
+          end
+          
+          -- Fallback to system pyrefly
+          new_config.cmd = { 'pyrefly', 'lsp' }
+        end,
+        settings = {
+          python = {
+            pyrefly = {
+              displayTypeErrors = 'force-on',
+            },
+          },
+        },
+      },
       vtsls = {},
       tailwindcss = {},
       gopls = {
@@ -132,7 +162,20 @@ return {
     --
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
-    local ensure_installed = vim.tbl_keys(servers or {})
+
+    -- Map LSP server names to Mason package names (some differ)
+    local lsp_to_mason = {
+      lua_ls = 'lua-language-server',
+      vtsls = 'vtsls',
+      pyrefly = 'pyrefly',
+      tailwindcss = 'tailwindcss-language-server',
+      gopls = 'gopls',
+    }
+
+    local ensure_installed = {}
+    for server_name, _ in pairs(servers or {}) do
+      table.insert(ensure_installed, lsp_to_mason[server_name] or server_name)
+    end
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code
       'black',

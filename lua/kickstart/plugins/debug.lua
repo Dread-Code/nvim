@@ -146,24 +146,36 @@ return {
       },
     }
 
-    -- Python debugging setup
+    -- Python debugging setup with auto-detection (UV or Poetry)
     dap.adapters.python = function(cb, config)
-      -- Try to get Poetry venv Python
-      local venv_python = vim.fn.trim(vim.fn.system 'poetry env info -p') .. '/bin/python'
-      if vim.fn.executable(venv_python) == 1 then
-        cb {
-          type = 'executable',
-          command = venv_python,
-          args = { '-m', 'debugpy.adapter' },
-        }
-      else
-        -- fallback to system python
-        cb {
-          type = 'executable',
-          command = 'python',
-          args = { '-m', 'debugpy.adapter' },
-        }
+      local util = require 'lspconfig.util'
+      local root = util.root_pattern('uv.lock', 'poetry.lock', 'pyproject.toml', '.git')(vim.fn.getcwd())
+      local venv_python = nil
+      
+      if root then
+        -- Check for UV project (uv.lock)
+        if vim.fn.filereadable(root .. '/uv.lock') == 1 then
+          local uv_python = root .. '/.venv/bin/python'
+          if vim.fn.executable(uv_python) == 1 then
+            venv_python = uv_python
+          end
+        end
+        
+        -- Check for Poetry project (poetry.lock)
+        if not venv_python and vim.fn.filereadable(root .. '/poetry.lock') == 1 then
+          local poetry_python = vim.fn.trim(vim.fn.system 'poetry env info -p') .. '/bin/python'
+          if vim.fn.executable(poetry_python) == 1 then
+            venv_python = poetry_python
+          end
+        end
       end
+      
+      -- Use detected venv or fallback to system python
+      cb {
+        type = 'executable',
+        command = venv_python or 'python',
+        args = { '-m', 'debugpy.adapter' },
+      }
     end
 
     dap.configurations.python = {

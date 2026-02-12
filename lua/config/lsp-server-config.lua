@@ -1,19 +1,8 @@
 local util = require 'lspconfig.util'
 
 -- NOTE: Remember adding the LSP server into the lsp plugin at the servers list
-vim.lsp.config('pyright', {
-  cmd = { 'poetry', 'run', 'pyright-langserver', '--stdio' },
-  settings = {
-    python = {
-      analysis = {
-        typeCheckingMode = 'standard',
-        autoImportCompletions = true,
-        useLibraryCodeForTypes = true,
-        diagnosticMode = 'workspace',
-      },
-    },
-  },
-})
+-- This file stores custom LSP server configurations that will be merged with
+-- the server configs in kickstart/plugins/lsp.lua
 
 vim.lsp.config('vtsls', {
   settings = {
